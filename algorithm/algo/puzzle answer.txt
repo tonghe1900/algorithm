@@ -1,0 +1,185 @@
+Count pairs:
+1. One bug is that a pair is counted twice. For a given example, the pair of [1,4] is counted twice.
+Another bug will appear when the input of a parameter is [1,2,3] and the input of x is 4 and the pair of
+[2,2] is counted as one of the answer, but this should not counted.
+The third bug is that it should be a[i]+a[j]==x. 
+
+public class CountPairs { 
+static int countPairs(int a[], int x) {
+int count = 0;
+for(int i=0; i<a.length-1; i++) {
+    for(int j=i+1; j<a.length; j++) { 
+       if (a[i]+a[j]==x) {
+           count++; 
+       }
+     } 
+    }
+return count; 
+  }
+ }
+
+2. average runtime : O(n*n)
+3. 
+
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class CountPairs {
+
+	
+	
+	static int countPairs(int a[], int x) {
+		Map<Integer, Integer> map = createMap(a);
+		
+		int count = 0;
+		Set<Integer> set = new HashSet<>();
+		for(Integer key: map.keySet()){
+			int val = x - key;
+			if(!set.contains(key)){
+				if(map.containsKey(val)){
+					if(val != key){
+						count += map.get(val)* map.get(key);
+					}else{
+						count += chooseTwo(map.get(val));
+					}
+					set.add(val);
+				}
+				
+			}
+			
+			
+		}
+		
+
+		return count; 
+		  }
+
+
+	private static Map<Integer, Integer> createMap(int[] a) {
+		Map<Integer, Integer> map = new HashMap<>();
+		for(int element :a ){
+			if(!map.containsKey(element)){
+				map.put(element, 1);
+			}else{
+				map.put(element, map.get(element) +1);
+			}
+		}
+		return map;
+	}
+	
+	
+	private static int chooseTwo(int total) {
+		if(total == 1) return 0;
+		
+		return total *  (total - 1) /2;
+	}
+
+
+	public static void main(String[]args){
+		
+		
+		junit.framework.Assert.assertEquals(9, countPairs(new int[]{1,2,3,4,2,2,2,1,1}, 4));
+		junit.framework.Assert.assertEquals(15, countPairs(new int[]{1,3,3,2,3,4,2,2,2,1,1}, 4));
+		junit.framework.Assert.assertEquals(21, countPairs(new int[]{2,2,2,2,2,2,2}, 4));
+		junit.framework.Assert.assertEquals(15, countPairs(new int[]{1,3,1,1,1,1,3,3}, 4));
+		junit.framework.Assert.assertEquals(8, countPairs(new int[]{-1,5,-1,5,-2,6,-2,6,4}, 4));
+	}
+}
+
+	
+4.The new average time is O(n)
+
+Music Streaming Service
+
+
+1. The library database stores the metadata for customers music libraries. With your
+growing subscriber base the latencies of retrieving data out of the database are growing.
+What are some typical options to reduce latencies at this layer and allow the service to
+scale? If there are multiple options, what are the trade-offs between these options?
+
+Some typical options include using cache, such as memcached(LRU algorithm applied), relational 
+database table denormalization  and using nosql such as cassandra and mongodb
+The trade-offs are that the effects involved to improve the Customer Library Service and Library Database
+If the library database uses rdbms previously and database table denormalization is enough to 
+solve the problem of the growing subscriber in the forseeable further, then this strategy could be applied
+since the database is not changed and only the table in the library database is adjusted.
+
+Since the rdbms could not horizontally scale the db layer, if the user number is huge, then
+the nosql  could be introduced such as cassandra and mongodb. These nosql db schema is designed with
+the related query and update db operations in mind so that these operations could execute very
+efficiently even with a huge amount of user request and the nosql could easily horizontally scale, but
+changing to the different database involves great effects.
+
+The cache layer could be introduced no matter what database is used, but adding the cache may 
+introduce the problem of stale data. Fortunately using the proper cache strategy could make the 
+incident of stale data relatively low and the customer library service could tolerate a little bit of stale data
+and the eventual consistency could be used.
+
+
+2. There are an increasing number of customers listening to the service on their mobile
+device. Due to constrained bandwidth they want to be able to reduce the amount of data
+streamed down to their device. What are some options to provide this feature to
+customers? Please include any architecture changes and changes to service
+responsibilities.
+
+Some common compressed music file format, or even lossy format,  could be applied.In this case,
+Music Import service should be improved to import the music for the mobile user and the improved 
+music service could manage the song metadata for these songs.
+
+Also, the recommendation service could be improved to recommend these relatively small music file to 
+the mobile user. 
+
+Many users would like to listen to a music many times. In this case, this music file could be saved locally
+in the client side. The mobile application could be improved to check whether this music exists
+locally before it requests music from our music service. Moreover, the music streaming service is on demand so that
+if the user only listen to half the music, then only half the music is streamed to the client.
+the streaming service could be improved to keep track of the progress of users' listening to music.
+Once the user stops fetching the music within a specified period, then the streaming closed.
+Meanwhile, the streaming will save the data about which part of a music has been already streamed 
+and saved into the client side and this data could be managed in the music streaming database.
+In this case, when this user wants to request the part of music file which has been saved in 
+the client size, the streaming service do not need to send this part of music file to the client and it
+could just tell the client it exists locally.
+
+Also, recommendation service could be improved to recommend the music listened most by the current
+user so that the music has already existed in the client side.
+
+
+3. Customers have been complaining that the current recommendations do not match their
+taste in music. You have been tasked with figuring out how to improve the
+recommendations service to increase customer satisfaction. How would you approach
+this problem? What are some ideas you would try?
+1). analyze the current recommendation algorithm and models
+2). preparing the data to evaluate its performance and the data include training set and testing set.
+3). try another recommendation algorithms and models and gets their performance by using the prepared data
+   Recommendation models include collaborative filtering(Item based or user based), content-based and knowledge-based and hybrid models.
+    Many applications use only the items purchased by customers  and explicit rate to represent
+    their interests, but they can also use other attributes, including items viewed, demographic
+     data, subject interests, and favorite artists
+
+   The evaluation methods are based on the cross-validation framework. The first method is
+   to evaluate the ratings estimated by the algorithm and compare the estimated ratings with the real ones and the other
+    method is to evaluate the recommendations directly and calculate the factors of true 
+    positive rate and false positive rate.
+4). choose the best performing models
+    Random recommendations are a base line.The models could be compared by building a chart
+    displaying their ROC curves. A good performance index is the area under the
+    curve, that is, the area under the ROC curve.The best-performing model is the one whose 
+    area under the ROC curve is the highest.
+5). optimizing the parameters of the selected best performing model 
+    Recommendation models often contain some numeric parameters.For instance, Item Based
+    Collaborative filtering takes account of the K-closest items. The k parameter could be 
+    optimized and the method to do it is to build a chart with the ROC curve with different
+    values of k and choose the k value which has the highest area under the ROC curve.
+    K value could also be optimized based on the precision-recall factors.
+
+
+
+
+
+
+
+	

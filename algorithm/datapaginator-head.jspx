@@ -1,0 +1,24 @@
+<jsp:root version="1.2" jsfc="f:view"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+     xmlns:ui="http://java.sun.com/jsf/facelets">
+     <ice:dataPaginator id="userScroll_0" for="#{tableName}"
+                       rowsCountVar="rowsCount"
+                       displayedRowsCountVar="displayedRowsCountVar"
+                       firstRowIndexVar="firstRowIndex"
+                       lastRowIndexVar="lastRowIndex"
+                       pageCountVar="pageCount" pageIndexVar="pageIndex">
+			<ice:outputFormat
+                value="#{dataPageLabel}"
+                styleClass="">
+            <f:param value="#{rowsCount}"/>
+            <f:param value="#{displayedRowsCountVar}"/>
+            <f:param value="#{firstRowIndex}"/>
+            <f:param value="#{lastRowIndex}"/>
+            <f:param value="#{pageIndex}"/>
+            <f:param value="#{pageCount}"/>
+        </ice:outputFormat>
+       </ice:dataPaginator>
+</jsp:root>

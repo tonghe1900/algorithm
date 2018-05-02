@@ -1,0 +1,46 @@
+<jsp:root version="1.2" jsfc="f:view"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+     xmlns:ui="http://java.sun.com/jsf/facelets">
+			<ice:dataPaginator id="tableScroll" for="#{tableName}" fastStep="3" pageCountVar="pageCount" pageIndexVar="pageIndex" 
+			                                paginator="true" paginatorMaxPages="4" vertical="false" styleClass="dataPaginator">
+			     <f:facet name="first">
+			        <ice:graphicImage id="firstpage_1"
+			                url="../../images/arrow-first.gif"
+			                style="border:none;"
+			                title="#{msgs['dataPaginator.firstpage']}"/>
+			    </f:facet>
+			    <f:facet name="last">
+			        <ice:graphicImage id="lastpage_1"
+			                url="../../images/arrow-last.gif"
+			                style="border:none;"
+			                title="#{msgs['dataPaginator.lastpage']}"/>
+			    </f:facet>
+			    <f:facet name="previous">
+			        <ice:graphicImage id="previouspage_1"
+			                url="../../images/arrow-previous.gif"
+			                style="border:none;"
+			                title="#{msgs['dataPaginator.previouspage']}"/>
+			    </f:facet>
+			    <f:facet name="next">
+			        <ice:graphicImage id="nextpage_1"
+			                url="../../images/arrow-next.gif"
+			                style="border:none;"
+			                title="#{msgs['dataPaginator.nextpage']}"/>
+			    </f:facet>
+			    <f:facet name="fastforward">
+			        <ice:graphicImage id="fastforward_1"
+			                          url="../../images/arrow-ff.gif"
+			                          style="border:none;"
+			                          title="#{msgs['dataPaginator.fastforward']}"/>
+			    </f:facet>
+			    <f:facet name="fastrewind">
+			        <ice:graphicImage id="fastrewind_1"
+			                          url="../../images/arrow-fr.gif"
+			                          style="border:none;"
+			                          title="#{msgs['dataPaginator.fastbackward']}"/>
+			    </f:facet>
+			</ice:dataPaginator>
+</jsp:root>

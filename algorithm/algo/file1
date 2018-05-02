@@ -1,0 +1,190 @@
+Simplest implementation is similar to BFS:
+For the fringe: Use a Stack instead of a Queue.
+Do not mark vertex when added to the fringe (subtle but important!)
+Instead mark when a vertex is removed from the fringe.
+
+
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+ 
+/**
+     * read resource file from given url,
+     * return all of its lines as an Iterator when resource is available
+     * return empty when resource is unavailable
+     *
+     * @param url given url
+     * @return Some iterator when resource available, Empty when resource is unavailable
+     */
+    private static Optional<Iterator<String>> from(String url) {
+
+        return Optional.empty();
+    }
+
+
+    /**
+     * read a text file, split each line into words, distinct words, and sort them according to word frequency, in a most frequent at top to least frequent at bottom order.
+     *
+     * @param url given url
+     * @return the ranked list
+     */
+    public static Optional<Iterable<String>> rank(String url) {
+Optional<Iterator<String>> lines =  from(url);
+// List<<String, Integer>>  - >  List<<String, Integer>>//tuple   
+lines.flatMap(line ->  imap(line.split(" "), voca-> (voca, 1))).reduce(new ReduceImpl()).sort().map(_.1); 
+        return Optional.empty();
+    }
+    //spark.
+    Source.fromFile("README.md").getLines().flatMap(_.split("[ ,.!;]+"))
+      .foldLeft(Map.empty[String, Int])((map, word) => map.+(word -> (map.getOrElse(word, 0) + 1)))
+      .toList.sortBy(_._2)(Ordering[Int].reverse).foreach(println)
+    
+    interface Reduce{
+            public     List<<String, Integer>> aggregrate( List<<String, Integer>>);
+    
+    }
+    private class ReduceImpl implements Reduce{
+           
+          public     List<<String, Integer>> aggregrate( List<<String, Integer>> input){
+                    
+                Map<<String, Integer>> result = new HashMap<>();
+                for(String key: input.keySet()){
+                     if(result.containsKey(key)){
+                          result.put(key, result.get(key)+1);
+                     }else{
+                           result.put(key,1);
+                     }
+                } 
+                return result;
+      
+          }
+    }
+ 
+
+    /**
+     * use merge sort to sort a given list
+     * Do not use APIs which have already implemented the merge sort algorithm
+     *
+     * @param list given unsorted list
+     * @param <T>  comparable element
+     * @return sorted list
+     */
+    public static <T extends Comparable<? super T>> List<T> mergeSort(List<T> list) {
+        
+        return Collections.EMPTY_LIST;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

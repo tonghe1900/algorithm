@@ -1,0 +1,90 @@
+<jsp:root version="1.2" jsfc="f:view"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:zem="http://www.zemida.com/facelets">
+		<ice:panelGroup styleClass="searchFormGroup">
+			<ice:outputText value="#{idmsgs['authform.search.title']}" styleClass="gridTitle"/>
+			<br/><br/>
+			<ice:panelGrid columns="4" columnClasses="search_titlecolumn,search_entrycolumn,search_titlecolumn,search_entrycolumn">
+				<ice:outputText value="#{idmsgs['authform.authname']}" />
+				<ice:inputText id="searchName" value="#{authBean.authSearch.name}" action="#{authBean.searchAction}" />
+				<ice:outputText value="#{idmsgs['authform.description']}" />
+				<ice:inputText id="searchDesc" value="#{authBean.authSearch.description}"  action="#{authBean.searchAction}" />
+			</ice:panelGrid>
+			<ice:panelGrid styleClass="buttonGrid" columns="3" columnClasses="buttonGridColumnClass">
+				<zem:listenerButton buttonText="#{idmsgs['search.button.text']}" actionListener="#{authBean.searchListener}" />
+				<zem:listenerRoleButton buttonText="#{idmsgs['create.button.text']}" actionListener="#{authBean.startCreateAuthorizationListener}" renderedOnUserRole="ROLE_authcreate" />
+				<zem:listenerButton buttonText="#{idmsgs['reset.button.text']}" actionListener="#{authBean.resetAuthorizationSearchListener}" />
+			</ice:panelGrid>
+		</ice:panelGroup>
+		<br/>
+		
+		<!-- NO RESULT -->
+		<ice:panelGroup styleClass="searchResultGroup" rendered="#{!authBean.authSearch.found}">
+			<table class="resultGrid">
+				<tr class="resultHeader">
+					<td class="resultTableCol"><ice:outputText styleClass="tableTitleText" value="#{idmsgs['authform.authname']}" /></td>
+					<td class="resultTableCol"><ice:outputText styleClass="tableTitleText" value="#{idmsgs['authform.description']}" /></td>
+				</tr>
+				<tr class="noresultRow">
+					<td colspan="2" class="resultTableCol"><ice:outputText styleClass="tableEntryText" value="#{idmsgs['authform.search.noresult']}" /></td>
+				</tr>
+			</table>
+		</ice:panelGroup>
+		
+		<!-- RESULT -->
+		<ice:panelGroup styleClass="searchResultGroup" rendered="#{authBean.authSearch.found}">
+			<ui:insert name="datapagehead">
+				<ui:include src="../common/datapaginator-head.jspx">
+		            <ui:param name="tableName" value="authResultTable" />
+		            <ui:param name="dataPageLabel" value="#{idmsgs['dataPaginator.location.message.auths']}" />
+				</ui:include>
+			</ui:insert>
+
+
+			<ice:dataTable id="authResultTable" headerClasses="resultHeader" rowClasses="resultOddRow,resultEvenRow" columnClasses="resultTableCol,resultTableCol,resultTableCommandCol" styleClass="resultGrid"
+			                          value="#{authBean.sortedAuthorizations}" var="auth" 
+			                          sortAscending="#{authBean.ascending}" sortColumn="#{authBean.sort}"
+			                          rows="5" binding="#{authBean.authSearchResultTable}">
+			       <ice:column>
+			       		<f:facet name="header">
+			       		<ice:commandSortHeader id="authNameHeader" columnName="authName"
+                                                       arrow="false">#{idmsgs['authform.authname']}
+                        </ice:commandSortHeader>
+<!-- 			       		<ice:outputText styleClass="tableTitleText" value="#{idmsgs['authform.authname']}" /> -->
+			       		</f:facet>
+			       		<ice:outputText id="authName" styleClass="tableEntryText" value="#{auth.authName}" />
+			       </ice:column>
+			       <ice:column>
+			       		<f:facet name="header">
+			       		<ice:commandSortHeader id="authDescHeader" columnName="description"
+                                                       arrow="false">#{idmsgs['authform.description']}
+                        </ice:commandSortHeader>
+<!-- 			       		<ice:outputText styleClass="tableTitleText" value="#{idmsgs['authform.description']}" /> -->
+			       		</f:facet>
+			       		<ice:outputText id="description" styleClass="tableEntryText" value="#{auth.description}" />
+			       </ice:column>
+			       <ice:column>
+			       		<f:facet name="header"><ice:graphicImage url="../../images/empty_image.png" width="5" height="5"/></f:facet>
+			       		<ice:commandButton actionListener="#{authBean.displayAuthorizationListener}" image="../../images/view.png"  value="#{auth.authId}" rendered="#{authBean.displayable}"  title="#{authBean.tooltips['display']}"/>
+			       		<ice:commandButton actionListener="#{authBean.editAuthorizationListener}" image="../../images/edit.png"  value="#{auth.authId}" rendered="#{authBean.modifyable}"  title="#{authBean.tooltips['edit']}"/>
+			       		<ice:commandButton actionListener="#{authBean.deleteAuthorizationListener}" image="../../images/delete.png"  value="#{auth.authId}" rendered="#{authBean.deletable}" title="#{authBean.tooltips['delete']}"/>
+			       </ice:column>
+			</ice:dataTable>
+
+		<ui:insert name="datapagefooot">
+			<ui:include src="../common/datapaginator-footer.jspx">
+	            <ui:param name="tableName" value="authResultTable" />
+			</ui:include>
+		</ui:insert>
+		
+		<ui:insert name="lossofdatapopup">
+		 	<ui:include src="../common/confirm-popup.jspx">
+		 		<ui:param name="popup" value="#{authBean.confirmCancelPopup}" />
+		 	</ui:include>
+		</ui:insert>
+		</ice:panelGroup>
+</jsp:root>

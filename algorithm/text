@@ -1,0 +1,92 @@
+import java.io.*;
+import java.util.*;
+
+/*
+http://xkcd.com/287/
+
+You are the waiter in the picture above. Given a variable total sum for appetizers (in the case above $15.05), write a program which writes to the screen what the customer’s order could be.
+
+For your convenience, here’s the menu of items:
+
+"Fruit": 2.15
+"Fries": 2.75
+"Salad": 3.35
+"Wings": 3.55
+"Mozzarella": 4.20
+"Plate": 5.80
+
+Note: You can order the same appetizer more than once.
+
+For example:
+
+Input:  15.05/
+Output: [{Wings=2, Fruit=1, Plate=1}, {Fruit=7}]
+
+//Wings=2, Fruit=1, Plate=1
+
+Input:  6.45
+Output: [{Fruit=3}]
+O(m * I * largesetNumberForItems)
+space complexity 
+O(m*I)
+O(I)  Input*100
+ */
+
+class Solution {
+  public static void main(String[] args) {
+    ArrayList<String> strings = new ArrayList<String>();
+    strings.add("Hello, World!");
+    strings.add("Welcome to CoderPad.");
+    strings.add("This pad is running Java 8.");
+
+    for (String string : strings) {
+      System.out.println(string);
+    }
+  }
+  public List<Map<String, Integer>> generateMemu(BigDecimal input, LinkedHashMap<String, BigDecimal> map){
+         if(map == null || map.isEmpty()){
+             return (input.getValue() == 0)? new ArrayList<>(): null;
+         }
+         if(input.getValue() < 0) return null;
+         if(input.getValue() == 0) return new ArrayList<>();
+         
+         LinkedHashMap<String, Integer> transformedMap = new LinkedHashMap<>();
+         for(String key: map.keySet()){
+           //2.15
+           transformedMap.put(key, map.get(key).multiple(100).getValue()); 
+         }
+        Tuple [] newMap = transformToTupleArray(transformedMap);
+         
+         int newInput = input.multiple(100).getValue();
+         // 1505    newInput+1 
+         List<Map<String, Integer>>   result [] =  new ArrayList<>[newInput+1];
+        for(int i=0;i<=newInput;i+=1){
+             result[i] = new ArrayList<>();
+        }
+        for(int i=0;i<newMap.length;i+=1){
+             for(int j= newInput; j>= newMap[i].getValue();j-=1){
+               for(int k =1;k*newMap[i].getValue()<=newInput;k+=1){
+                    List<Map<String, Integer>>  previousResult = result[j - k*newMap[i].getValue()];
+                    List<Map<String, Integer>>  current = result[j];
+                    for(Map<String, Integer> element: previousResult){
+                          Map<String, Integer> copy = new HashMap<>(element);
+                          copy.put(newMap[i].getKey(), k);
+                    }
+                    current.add(copy);
+                    
+               }
+             }
+        }
+         
+        //   "Fruit": 215        215   [{fruit , 1} ]
+            //  215*2-215   [{fruit , 1} ,{fruit , 1}]
+//"Fries": 275
+
+           //  iterate the items
+        //  newInput +1  - > 0
+        //  iterate the number of items chosen
+      return result[newInput];
+  }
+  
+  
+}

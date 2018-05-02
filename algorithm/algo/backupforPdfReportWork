@@ -1,0 +1,247 @@
+public static void main(String[] args) throws Exception {
+
+		// ITextRenderer renderer = new ITextRenderer();
+		// renderer.getSharedContext().setReplacedElementFactory(new
+		// B64ImgReplacedElementFactory());
+		// DelegatingUserAgent myUAC = new DelegatingUserAgent();
+		// myUAC.setImageResourceLoader(new ImageResourceLoader());
+		//
+		// renderer.getSharedContext().setUserAgentCallback(myUAC);
+		//
+		// FileInputStream in = new
+		// FileInputStream("/Users/het/Desktop/compiler/page/localhost.htm");
+		// ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// byte[] buffer = new byte[1024];
+		// int len = in.read(buffer);
+		// while (len != -1) {
+		// out.write(buffer, 0, len);
+		// len = in.read(buffer);
+		// }
+		//
+		// // if you have html source in hand, use it to generate document
+		// object
+		// renderer.setDocumentFromString( new String(out.toByteArray() ));
+		//
+		// renderer.layout();
+		//
+		// String fileNameWithPath =
+		// "/Users/het/development/compare/CloudCompare/cloudcompare-web/src/main/resources/PDF-FromHtmlString5.pdf";
+		// FileOutputStream fos = new FileOutputStream( fileNameWithPath );
+		// renderer.createPDF( fos );
+		// fos.close();
+		// in.close();
+		// System.out.println( "File 2: '" + fileNameWithPath + "' created." );
+
+		String templateName = "templateName";
+		String configurationName = "configurationName";
+		String providerName = "providerName";
+		String providerId = "providerId";
+		String coverage = "coverage";
+
+		String address = "address";
+		String price = "price";
+		String serviceQuality = "serviceQuality";
+		String computeAmount = "computeAmount";
+		String storageAmount = "storageAmount";
+		String networkAmount = "networkAmount";
+		String appTemplateConfigId = "appTemplateConfigId";
+		String appPath = "appPath";
+		List<EstimatedMaterialsBillVO> estimatedMaterialsBill = new ArrayList<>();
+		estimatedMaterialsBill.add(createEstimatedMaterialsBillVO(2, "Item1",
+				"spec1", "133"));
+		estimatedMaterialsBill.add(createEstimatedMaterialsBillVO(2, "Item1",
+				"spec1", "133"));
+		estimatedMaterialsBill.add(createEstimatedMaterialsBillVO(2, "Item1",
+				"spec1", "133"));
+		estimatedMaterialsBill.add(createEstimatedMaterialsBillVO(2, "Item1",
+				"spec1", "133"));
+		estimatedMaterialsBill.add(createEstimatedMaterialsBillVO(2, "Item1",
+				"spec1", "133"));
+		String baseContextPath = "baseContextPath";
+		List<String> selectedFeatures = new ArrayList<>();
+		String justificationNote = "justificationNote";
+		String logoUrl = "http://localhost:8080/resources/upload/usergroups/CM-GRVS/logos/WhiteLabelInfo_CM-GRVS_BRAND_LOGO_xsx7uad5ih.png";
+		// 2 DB Server(s) EC2 - US West (N. California) Region - Compute
+		// Optimized - Current
+		// Generation 4 Extra Large running Linux/UNIX - 30 GB, 55 ECU, 16
+		// vCPU, 320 GB SSD
+		// $1422.53
+		// 4 App Server(s) EC2 - US West (N. California) Region - Compute
+		// Optimized - Current
+		// Generation 2 Extra Large running Linux/UNIX - 15 GB, 28 ECU, 8
+		// vCPU, 160 GB SSD
+		// $1422.53
+		// 2 Amazon EC2
+		// Virtual
+		// Machine(Storage)
+		// EC2 - US West (N. California) Region - Provisioned EBS Volume $120.00
+		// 4 App Server(s) -
+		// disk
+		// EC2 - US West (N. California) Region - Provisioned EBS Volume $64.00
+		String logoUrl1 = "http://localhost:8080/resources/upload/usergroups/CM-GRVS/logos/WhiteLabelInfo_CM-GRVS_BRAND_LOGO_xsx7uad5ih.png";
+		String encode = "aHR0cDovL2xvY2FsaG9zdDo4MDgwL3Jlc291cmNlcy91cGxvYWQvdXNlcmdyb3Vwcy9DTS1HUlZTL2xvZ29zL1doaXRlTGFiZWxJbmZvX0NNLUdSVlNfQlJBTkRfTE9HT194c3g3dWFkNWloLnBuZw==";
+
+		final Base64 base64 = new Base64();
+
+		System.out.println(new String(base64.decode(encode), "UTF-8")
+				.equals(logoUrl1));
+
+		ByteArrayOutputStream output = PdfReportGenerator.INSTANCE
+				.createPDFReportItext("", null, logoUrl, templateName,
+						configurationName, providerName, providerId, coverage,
+						address, price, serviceQuality, computeAmount,
+						storageAmount, networkAmount, appTemplateConfigId,
+						appPath, estimatedMaterialsBill, appPath,
+						selectedFeatures, justificationNote, "terms");
+		OutputStream fosx = null;
+		try {
+			fosx = new BufferedOutputStream(
+					new FileOutputStream(
+							"/Users/het/development/compare/CloudCompare/cloudcompare-web/src/main/resources/my_first_pdfptable.pdf"));
+			output.writeTo(fosx);
+			fosx.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// if(fos != null){
+			// try {
+			// fosx.close();
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// try {
+			// output.flush();
+			// output.close();
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+
+		}
+
+	}
+
+	// quantity;
+	// private String item;
+	// private String spec;
+	// private String totalMonthlyCost;
+	
+	
+	
+	private static EstimatedMaterialsBillVO createEstimatedMaterialsBillVO(
+			int quantity, String item, String spec, String totalMonthlyCost) {
+		EstimatedMaterialsBillVO estimatedMaterialsBillVO = new EstimatedMaterialsBillVO();
+		estimatedMaterialsBillVO.setItem(item);
+		estimatedMaterialsBillVO.setQuantity(quantity);
+		estimatedMaterialsBillVO.setSpec(spec);
+		estimatedMaterialsBillVO.setTotalMonthlyCost(totalMonthlyCost);
+		return estimatedMaterialsBillVO;
+	}
+
+	private static void test(PdfWriter writer) throws DocumentException,
+			IOException {
+		PdfContentByte cb = writer.getDirectContent();
+		// we need to switch to text mode
+		cb.beginText();
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI,
+				BaseFont.EMBEDDED);
+		cb.setFontAndSize(bf, 30);
+		// write text centered at 155 mm from left side and 270 mm from bottom
+		cb.showTextAligned(
+				PdfContentByte.ALIGN_CENTER,
+				"Our headline Our headline Our headline Our headline Our headline",
+				439, 765, 1);
+		// leave text mode
+		cb.endText();
+
+		// now draw a line below the headline
+		cb.setLineWidth(1f);
+		Color customColor = new Color(221, 221, 221);
+		cb.setColorFill(customColor);
+		cb.setColorStroke(customColor);
+		cb.moveTo(0, 755);
+		cb.lineTo(300, 755);
+		cb.stroke();
+	}
+
+	private static void test1(PdfWriter writer) throws DocumentException,
+			IOException {
+		PdfContentByte cb = writer.getDirectContent();
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI,
+				BaseFont.EMBEDDED);
+		cb.setFontAndSize(bf, 30);
+		// first define a standard font for our text
+		Font helvetica8BoldBlue = FontFactory.getFont(FontFactory.HELVETICA, 8,
+				Font.BOLD, Color.blue);
+
+		// create a column object
+		ColumnText ct = new ColumnText(cb);
+
+		// define the text to print in the column
+		Phrase myText = new Phrase(
+				"Lorem ipsum dolor sit amet, ... Our headline Our headline Our headline",
+				helvetica8BoldBlue);
+		ct.setSimpleColumn(myText, 72, 600, 355, 317, 10, Element.ALIGN_LEFT);
+		try {
+			ct.go();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+				// test(writer);
+			// char tickSymbol=0xF8FF;
+			// char second = '\u8ab0';
+			// char [] charArray = new char[2];
+			// charArray[0] = tickSymbol;
+			// charArray[1] = second;
+			// //char xx= '\n058';
+			// //placeChunck(writer, new String(charArray), 0, 0);
+			//
+			// //BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H,
+			// BaseFont.EMBEDDED);
+			// Font f = new Font(bf, 10);
+			// Paragraph test = new Paragraph(new String(charArray), f);
+			// document.add(test);
+			// // bf = BaseFont.createFont(font, BaseFont.IDENTITY_H,
+			// BaseFont.EMBEDDED);
+			// Font ff = new Font(bf, 10);
+			// //BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H,
+			// BaseFont.EMBEDDED);
+			// Paragraph p = new Paragraph("H\u2082SO\u2074", ff);
+			// document.add(p);
+			//
+			//
+			//
+			//
+			//
+			// String s = "H\u2082SO\u2074";
+			// System.out.println(s);
+			// document.add(new Paragraph(s, ff));
+
+			// placeChunck(writer, "TongTong1", 0, 0);
+			// placeChunck(writer, "TongTong2", 50, 50);
+			// placeChunck(writer, "TongTong3", 150, 150);
+			// placeChunck(writer, "TongTong4", 300, 300);
+			// placeChunck(writer, "TongTong5", 500, 500);
+			// placeChunck(writer, "TongTong6", 500, 800);
+			// placeChunck(writer, "TongTong7", 500, 1000);
+			// placeChunck(writer, "TongTong8", 500, 2000);
+			// new Column();
+			// String desc =
+			// "You have chosen "+providerName+" as the Best Execution Venue for application infrastructure "+templateName+". "+providerName
+			// +
+			// " covers "+coverage+"% of the required capabilities. Placing the infrastructure in "+address+" will produce an "
+			// + " estimated monthly cost of "+price+". ";
+			// Paragraph descSection = new Paragraph(desc, new Font(bf, 15));
+			// String test1 = "test1";
+			// Paragraph tst = new Paragraph(test1, new Font(bf, 15));
+			// descSection.add(tst);
+			// descSection.setAlignment(Element.ALIGN_LEFT);
+			// document.add(descSection);
